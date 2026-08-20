@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="Simple product guides and AI help for Toburt digital products.">
+  <title>Toburt Product Support</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#070b12;--panel:#0d1420;--panel2:#121c2a;--line:#25344a;
+      --text:#f4f7fb;--muted:#91a0b5;--accent:#7c3aed;--accent2:#9f67ff;
+      --ok:#34d399;--warn:#fbbf24;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at 70% 0,#1a1031 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+    a{color:inherit}.shell{max-width:1240px;margin:auto;padding:24px}
+    .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:34px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:18px}
+    .mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4f46e5);display:grid;place-items:center;font-weight:1000}
+    .tag{color:var(--muted);font-size:13px}
+    .hero{padding:40px 0 28px;max-width:820px}
+    .hero h1{font-size:clamp(34px,6vw,68px);line-height:.98;letter-spacing:-.045em;margin:0 0 18px}
+    .hero p{font-size:18px;color:#b8c4d4;max-width:720px}
+    .searchrow{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}
+    input,button{font:inherit}
+    .searchrow input,.ask input{min-height:48px;border:1px solid var(--line);background:#0a111c;color:var(--text);border-radius:12px;padding:0 14px;outline:none}
+    .searchrow input{flex:1;min-width:230px}
+    button{min-height:44px;border:1px solid var(--line);background:var(--panel2);color:white;border-radius:11px;padding:0 15px;font-weight:800;cursor:pointer}
+    button.primary{background:linear-gradient(135deg,var(--accent),#5b21b6);border-color:#8b5cf6}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .card{background:linear-gradient(180deg,#111a27,#0c131e);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
+    .card h3{margin:0 0 7px;font-size:17px}.card p{color:var(--muted);margin:0 0 14px}
+    .empty{color:var(--muted);padding:24px 0}
+    .product-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:20px}
+    .product-head h1{margin:0;font-size:32px}.crumb{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+    .tabs button.active{background:#2c1651;border-color:#7c3aed}
+    .support-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,.8fr);gap:16px}
+    .section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px}
+    .section h2{margin:0 0 12px;font-size:20px}.section h3{margin-top:24px}
+    .steps{padding-left:22px}.steps li{margin:9px 0}
+    details{border-top:1px solid var(--line);padding:12px 0}
+    details:first-of-type{border-top:0}summary{cursor:pointer;font-weight:800}
+    .answer{color:#c5d0df;padding:10px 0 2px}
+    .ask{position:sticky;top:16px;background:linear-gradient(180deg,#151022,#0d1420);border:1px solid #49306d;border-radius:16px;padding:18px}
+    .ask h2{margin:0 0 6px}.ask p{color:var(--muted);margin-top:0}.ask form{display:flex;gap:8px}.ask input{flex:1;min-width:0}
+    .chat{margin-top:14px;max-height:440px;overflow:auto}
+    .msg{border-radius:12px;padding:11px 12px;margin:8px 0;white-space:pre-wrap}
+    .me{background:#171f2b;margin-left:28px}.ai{background:#21143a;border:1px solid #51347b;margin-right:18px}
+    .boundary{font-size:12px;color:var(--muted);margin-top:12px}
+    .pill{display:inline-block;font-size:11px;font-weight:900;color:var(--ok);border:1px solid #34d39955;border-radius:999px;padding:3px 8px}
+    .hidden{display:none!important}
+    @media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.support-layout{grid-template-columns:1fr}.ask{position:static}}
+    @media(max-width:600px){.shell{padding:16px}.grid{grid-template-columns:1fr}.hero{padding-top:20px}.product-head{display:block}.ask form{display:block}.ask input,.ask button{width:100%;margin-top:8px}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <div class="brand"><div class="mark">T</div><div>Toburt Support<div class="tag">Simple help for your digital products</div></div></div>
+    <button id="homeBtn" type="button">All Products</button>
+  </header>
+
+  <section id="home">
+    <div class="hero">
+      <span class="pill">SELF-SERVICE PRODUCT HELP</span>
+      <h1>Tell us what you're trying to do.</h1>
+      <p>Choose your product for plain-English setup instructions, common questions, troubleshooting, and an AI guide that knows how your product works.</p>
+    </div>
+    <div class="searchrow"><input id="productSearch" placeholder="Search your product"><button id="reload" type="button">Refresh</button></div>
+    <div id="products" class="grid"></div>
+    <div id="homeStatus" class="empty"></div>
+  </section>
+
+  <section id="product" class="hidden">
+    <div class="crumb">Toburt Support / Product Guide</div>
+    <div class="product-head">
+      <div><h1 id="productName"></h1><div id="productSubtitle" class="tag"></div></div>
+      <span class="pill">AI GUIDE READY</span>
+    </div>
+    <div class="tabs">
+      <button type="button" data-tab="guide" class="active">Start Here</button>
+      <button type="button" data-tab="faq">FAQ</button>
+      <button type="button" data-tab="troubleshooting">Troubleshooting</button>
+      <button type="button" data-tab="glossary">What does that mean?</button>
+    </div>
+    <div class="support-layout">
+      <div>
+        <div id="guide" class="tabpane"></div>
+        <div id="faq" class="tabpane hidden"></div>
+        <div id="troubleshooting" class="tabpane hidden"></div>
+        <div id="glossary" class="tabpane hidden"></div>
+      </div>
+      <aside class="ask">
+        <h2>Ask your product guide</h2>
+        <p>Ask how to set up, use, or troubleshoot this product.</p>
+        <form id="askForm"><input id="question" maxlength="700" placeholder="Example: What do I do first?" required><button class="primary" type="submit">Ask</button></form>
+        <div id="chat" class="chat"></div>
+        <div class="boundary">This guide explains the product itself. It does not provide legal, tax, medical, contractual, financial, or other professional advice.</div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script>
+const API='https://wvhnfnmndtnkjrhxfqbf.supabase.co/functions/v1/dp-support-api';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let all=[],current=null;
+function productParam(){return new URLSearchParams(location.search).get('product')||''}
+async function loadProducts(){
+  $('#homeStatus').textContent='Loading products…';
+  try{
+    const r=await fetch(API,{cache:'no-store'}),j=await r.json();
+    if(!r.ok||!j.ok) throw new Error(j.error||'Unable to load');
+    all=j.products||[]; drawProducts(); $('#homeStatus').textContent=all.length?'':'No product guides are published yet.';
+  }catch(e){$('#homeStatus').textContent='Unable to load product guides right now.'}
+}
+function drawProducts(){
+  const term=$('#productSearch').value.trim().toLowerCase();
+  const list=all.filter(p=>!term||p.name.toLowerCase().includes(term)||(p.subtitle||'').toLowerCase().includes(term));
+  $('#products').innerHTML=list.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.subtitle||'Step-by-step product help')}</p><button class="primary" type="button" data-open="${esc(p.slug)}">Open Help Guide</button></article>`).join('');
+}
+function sectionHTML(s){
+  const steps=(s.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const tips=(s.tips||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  return `<div class="section"><h2>${esc(s.title||'')}</h2>${s.purpose?`<p>${esc(s.purpose)}</p>`:''}${steps?`<ol class="steps">${steps}</ol>`:''}${tips?`<h3>Helpful tips</h3><ul>${tips}</ul>`:''}</div>`
+}
+async function openProduct(slug,push=true){
+  $('#home').classList.add('hidden'); $('#product').classList.remove('hidden');
+  $('#productName').textContent='Loading…'; $('#productSubtitle').textContent='';
+  try{
+    const r=await fetch(API+'?slug='+encodeURIComponent(slug),{cache:'no-store'}),j=await r.json();
+    if(!r.ok||!j.ok) throw new Error(j.error||'Unable to load');
+    current={slug,...j}; const p=j.product,s=j.support,g=s.help_guide||{};
+    $('#productName').textContent=p.name; $('#productSubtitle').textContent=p.subtitle||'';
+    $('#guide').innerHTML=`<div class="section"><h2>${esc(g.title||'Start Here')}</h2><p>${esc(g.intro||'')}</p>${(g.quick_start||[]).length?'<h3>Quick start</h3><ol class="steps">'+g.quick_start.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>':''}</div>`+(g.sections||[]).map(sectionHTML).join('');
+    $('#faq').innerHTML=`<div class="section"><h2>Frequently asked questions</h2>${(s.faq||[]).map(x=>`<details><summary>${esc(x.question)}</summary><div class="answer">${esc(x.answer)}</div></details>`).join('')||'<p>No FAQs yet.</p>'}</div>`;
+    $('#troubleshooting').innerHTML=`<div class="section"><h2>Something not working?</h2>${(s.troubleshooting||[]).map(x=>`<details><summary>${esc(x.problem)}</summary><div class="answer"><b>Likely cause:</b> ${esc(x.likely_cause||'')}<ol class="steps">${(x.steps||[]).map(y=>'<li>'+esc(y)+'</li>').join('')}</ol></div></details>`).join('')||'<p>No troubleshooting items yet.</p>'}</div>`;
+    $('#glossary').innerHTML=`<div class="section"><h2>Plain-English glossary</h2>${(s.glossary||[]).map(x=>`<details><summary>${esc(x.term)}</summary><div class="answer">${esc(x.meaning)}</div></details>`).join('')||'<p>No glossary items yet.</p>'}</div>`;
+    if(push){const u=new URL(location.href);u.searchParams.set('product',slug);history.pushState({},'',u)}
+    $('#chat').innerHTML='<div class="msg ai">Hi! Tell me what you’re trying to do with this product and I’ll walk you through it.</div>';
+  }catch(e){$('#productName').textContent='Guide unavailable';$('#productSubtitle').textContent=String(e.message||e)}
+}
+function goHome(push=true){current=null;$('#product').classList.add('hidden');$('#home').classList.remove('hidden');if(push){const u=new URL(location.href);u.searchParams.delete('product');history.pushState({},'',u)}}
+$('#productSearch').addEventListener('input',drawProducts);
+$('#reload').addEventListener('click',loadProducts);
+$('#homeBtn').addEventListener('click',()=>goHome());
+document.body.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)openProduct(b.dataset.open);const t=e.target.closest('[data-tab]');if(t){document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===t));document.querySelectorAll('.tabpane').forEach(x=>x.classList.add('hidden'));$('#'+t.dataset.tab).classList.remove('hidden')}});
+$('#askForm').addEventListener('submit',async e=>{
+  e.preventDefault(); if(!current)return;
+  const q=$('#question').value.trim(); if(!q)return;
+  $('#chat').insertAdjacentHTML('beforeend','<div class="msg me">'+esc(q)+'</div>');
+  $('#question').value=''; const waiting=document.createElement('div');waiting.className='msg ai';waiting.textContent='Thinking…';$('#chat').appendChild(waiting);$('#chat').scrollTop=$('#chat').scrollHeight;
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({slug:current.slug,question:q})}),j=await r.json();
+    waiting.textContent=r.ok&&j.ok?j.answer:(j.error||'I could not answer that right now.');
+  }catch(err){waiting.textContent='I could not answer that right now. Please try again.'}
+  $('#chat').scrollTop=$('#chat').scrollHeight;
+});
+window.addEventListener('popstate',()=>{const p=productParam();p?openProduct(p,false):goHome(false)});
+loadProducts().then(()=>{const p=productParam();if(p)openProduct(p,false)});
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@ name: Build Product Pages
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '*/15 * * * *'
   push:
     paths:
       - '.github/workflows/build-product-pages.yml'
